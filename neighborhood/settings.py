@@ -42,6 +42,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
+cloudinary.config( 
+  cloud_name = "dzub8b65i", 
+  api_key = "232297643923456", 
+  api_secret = "SI9zDZhG1rioWzfsydtlgS9DBg4" 
+)
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
