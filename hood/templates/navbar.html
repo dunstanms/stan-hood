@@ -1,0 +1,55 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="static/css/hood.css">
+</head>
+<body class="jumbotron">
+<!-- <body style="background-image: url('https://i2.wp.com/bbbslubbock.org/wp-content/uploads/2018/10/grey-background-for-site-for-website-1432015867.jpg?ssl=1')"> -->
+        <ul class="nav nav-tabs" style="justify-content: space-around;">
+                <li><a href="{% url 'home'%}">Home</a></li>
+                {% if user.is_authenticated %}
+                
+                
+                <li>
+                  <a href="{% url 'new_post'%}">post</a>
+                </li>
+                <li>
+                  <a href="{% url 'new_buss'%}">Add a business</a>
+                </li>
+                  <li style="float:right;margin-right: 9%">
+                    <a class='btn btn-default' href="/logout">Logout</a>
+                  </li>
+                  <li style="float:right;margin-left: 10%;">
+                    <a href="{%url 'profile' user.id %}">{{user.username}}<img src="../../static/images/profileee.png" alt="instagram logo on nav-bar " style="width:53px; height:30px;margin-top:5px;border-right:1px solid;padding-right: 23px; "></a>
+                  </li>
+                  <li>
+                    <div style="padding:10px;">
+      
+                        <form class="form" role="search" action="{% url 'search_results' %}">
+                            <input class="form-control mr-sm-2" type="search"  name="name" placeholder="Search" aria-label="Search" style="background-color: transparent;color:white;">
+                        </form>
+                      </div>
+                </li>
+                
+
+              </ul>
+           
+          </ul>
+          {% else %}
+          <li>
+            <a class='btn btn-default' href="/accounts/login">Login</a>
+          </li>
+
+          {% endif %}
+        
+        </div>
+              </ul>
+       
+
+</body>
+</html>
