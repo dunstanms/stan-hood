@@ -1,68 +1,21 @@
-{%extends 'base.html'%}
-{% load bootstrap4 %}
- {% load staticfiles %}
+{% extends 'base.html' %}
+
 {% block content %}
-<div class="container">
-  {% if profile%}
-  {%for credential in profile%}
-        <div class="row" style="padding-bottom:20px">
-        <div class="col-md-4">
-            <img class="center-block img-responsive img-circle" src="{{credential.profile_photo.url}}" alt="" style="width:170px; height:170px">
-        </div>
-        <div class="col-md-8">
-            <h2><strong>{{credential.user}}</strong></h2>
-            <h4><strong>{{posts|length}}</strong> Post{{posts|pluralize}}</h4>
-            <h4>bio:{{credential.bio}}</h4>
-            <h4>Contact:{{credential.contact_no}}</h4>
-            <h4>email:{{credential.email}}</h4>
-            {%if credential.user.id == user.id%}
-            <a class="btn btn-default btn-lg" href="{% url 'edit_profile' %}">
-                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Edit Profile
-                </a>
+<div class="container ">
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 mt-4 bg-white prof mr-2 ml-2">
+            <img class="rounded-circle account-img d-block mx-auto" src="{{ user.profile.profile_picture.url }}"height="125px" width="125px">
+            <h5 class="text-center mt-3">{{user.username}}</h5>
+            <p class="text-center"> {{user.email}}</p>
+            {% if request.user.profile.neighbourhood %}
+            <p class="text-center">My Hood <a class="btn btn-sm btn-info" href="{% url 'single-hood' user.profile.neighbourhood.id %}">{{ user.profile.neighbourhood.name }}</a>
+            </p>
             {% endif %}
         </div>
-        </div>
-  {% endfor %}
-  {%else%}
-      <div class="col-md-4">
-       
-      </div>
-      <div class="col-md-8">
-        <h2><strong>{{user}}</strong></h2>
-        <h4><strong>0</strong> Post <strong>0</strong></h4>
-        <h4>An Awesome Bio Will Appear Here</h4>
-        <a class="btn btn-sm btn-primary" href="{% url 'edit_profile' %}"> Update Profile</a>
-      </div>
+        <div class="col-md-3"></div>
     </div>
-  {%endif%}
-<hr>    
-<div class="row">
-   <div class="container">
-     
-   {%if posts%}
-     <h2>Posts</h2>
-        {% for image in posts%}
-        
-            <div class="col-md-4" style="display:flex;flex-direction: row;">                
-                <div class="card" style="background-color: rgb(72, 121, 115);">
-                   <h2 class="card-header">{{image.name}}</h2>
-                   <p>{{image.description}}</p>
-                </div>
-            </div>
-        {%endfor%}
-   {%else%}
-   {% if businesses %}
-    {% for buz in businesses%}
-    <p>{{buz.name}}</p>
-    {% endfor %}
-   {% endif %}
-     {%if credential.user.id == user.id%}
-         <h3 class="text-center">You havent posted any profile yet. Get started by posting one <a href="{% url 'new_post' %}">here</a></h3>
-     {%else%}
-       <h3 class="text-center">This user hasn't created any posts yet.</h3>
-     {%endif%}
-   {%endif%}
-   </div>
- </div>
+
+
 </div>
-{%endblock%}
+{% endblock %}

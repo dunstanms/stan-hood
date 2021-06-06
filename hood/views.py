@@ -27,7 +27,7 @@ def home(request):
         hoods = Neighborhood.objects.all()
         return render(request, 'home.html', {"hoods": hoods})
 
-   return render(request, 'profile.html', {"profile": profile, "hoods": hoods, "businesses": businesses,"posts":posts})
+    return render(request, 'profile.html', {"profile": profile, "hoods": hoods, "businesses": businesses,"posts":posts})
 
 @login_required(login_url='/accounts/login/')
 def profile(request, user):
