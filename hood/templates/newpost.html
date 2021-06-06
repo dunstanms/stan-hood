@@ -1,0 +1,34 @@
+{%extends "base.html"%}
+{% load bootstrap4 %}
+ {% load staticfiles %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>New Post</title>
+  {{form.media}}
+
+{% block styles %} {% bootstrap_css %}
+  <link rel="stylesheet" href="{% static 'css/hood.css' %}"> {% endblock %}
+
+</head>
+
+<body>
+  {% block content %}
+  <form  action="{%url 'new_post'%}" method="post" style="width:50%;margin-top: 5%;margin-left:20%;" class="col-xs-10" enctype="multipart/form-data">
+    {%csrf_token%}
+
+    {% bootstrap_form form%}
+    <input type="submit" class="btn btn-success btn-lg" value="submit">
+  </form>
+     <p><br><br><a href="/">Home page</a></p>
+   {% block scripts %}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  {% bootstrap_javascript %} {% endblock %}
+{% endblock%}
+</body>
+
+</html>
