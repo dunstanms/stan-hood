@@ -1,132 +1,79 @@
 from django.db import models
-
-# Create your models here.
-from django.db import models
 from django.contrib.auth.models import User
-from tinymce.models import HTMLField
-import datetime as dt
+from pyuploadcare.dj.models import ImageField
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
-# Create your models here.
+
+class NeighbourHood(models.Model):
+    name = models.CharField(max_length=50)
+    location = models.CharField(max_length=60)
+    admin = models.ForeignKey("Profile", on_delete=models.CASCADE, related_name='hood')
+    mtaa_logo = models.ImageField(upload_to='images/')
+    description = models.TextField()
+    health_department = models.IntegerField(null=True, blank=True)
+    police_contact = models.IntegerField(null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.name} hood'
+
+    def create_neighborhood(self):
+        self.save()
+
+    def delete_neighborhood(self):
+        self.delete()
+
+    @classmethod
+    def find_neighborhood(cls, neighborhood_id):
+        return cls.objects.filter(id=neighborhood_id)
 
 
 class Profile(models.Model):
-    class Meta:
-        db_table = 'profile'
-    profile_photo = models.ImageField(upload_to='images/', blank=True)
-    contact_no =  models.CharField(max_length = 10,blank =True)
-    email = models.EmailField(max_length=70, blank=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
-
-    def save_profile(self):
-        self.save()
-
-    def delete_profile(cls, id):
-        self.delete()
-
-    def update_profile(self,update):
-        self.bio = update
-        self.save()
-    @classmethod
-    def get_all_profiles(cls):
-        proff = cls.objects.all()
-        return proff
-
-    @classmethod
-    def get_profile(cls, id):
-        profile = Profile.objects.get(user=id)
-        return profile
-
-    @classmethod
-    def find_profile(cls, search_term):
-        profile = Profile.objects.filter(user__username__icontains=search_term)
-        return profile
-
-    @classmethod
-    def filter_by_id(cls, id):
-        profile = Profile.objects.filter(user=id).first()
-        return profile
-
-class Neighborhood(models.Model):
-    hood = models.CharField(max_length=30, default="e.g Kagarama, Niboyi, Gisenyi etc")
-    location = models.CharField(max_length=30)
-    occupants_count = models.IntegerField(default=0, blank=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='hoods', blank=True)
-    date = models.DateTimeField(auto_now_add=True)
-    police =  models.CharField(max_length = 10,blank =True)
-    health_department =  models.CharField(max_length = 10,blank =True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    name = models.CharField(max_length=80, blank=True)
+    bio = models.TextField(max_length=254, blank=True)
+    profile_picture = models.ImageField(upload_to='images/', default='default.png')
+    location = models.CharField(max_length=50, blank=True, null=True)
+    neighbourhood = models.ForeignKey(NeighbourHood, on_delete=models.SET_NULL, null=True, related_name='members', blank=True)
 
     def __str__(self):
-        return self.hood
+        return f'{self.user.username} profile'
 
-    @classmethod
-    def search_neighborhood_by_name(cls, search_term):
-        neighborhoods = cls.objects.filter(name__icontains=search_term)
-        return neighborhoods
+    @receiver(post_save, sender=User)
+    def create_user_profile(sender, instance, created, **kwargs):
+        if created:
+            Profile.objects.create(user=instance)
 
-    @classmethod
-    def find_neigborhood(cls, id):
-        neighborhood = Neighborhood.objects.filter(id=id)
-        return neighborhood
-
-    @classmethod
-    def all_neighborhoods(cls):
-        neighborhoods = cls.objects.all()
-        return neighborhoods
-
-    @classmethod
-    def get_all_profiles(cls):
-        profile = Profile.objects.all()
-        return profile
+    @receiver(post_save, sender=User)
+    def save_user_profile(sender, instance, **kwargs):
+        instance.profile.save()
 
 
 class Business(models.Model):
-    name = models.CharField(max_length=30)
-    description = HTMLField(blank=True)
-    email = models.EmailField(max_length=70, blank=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    hood = models.ForeignKey(Neighborhood, on_delete=models.CASCADE, related_name='biz', null=True)
+    name = models.CharField(max_length=120)
+    email = models.EmailField(max_length=254)
+    description = models.TextField(blank=True)
+    neighbourhood = models.ForeignKey(NeighbourHood, on_delete=models.CASCADE, related_name='business')
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='owner')
 
     def __str__(self):
-        return self.name
+        return f'{self.name} Business'
 
-    @classmethod
-    def search_by_name(cls, search_term):
-        businesses = cls.objects.filter(name__icontains=search_term)
-        return businesses
-    
-    @classmethod
-    def find_by_neigborhood(cls, hood):
-        buss = Business.objects.filter(hood=hood)
-        return buss
-
-class Post(models.Model):
-    name = models.CharField(max_length=30)
-    image = models.ImageField(upload_to='pictures/', blank=True)
-    description = HTMLField(blank=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    hood = models.ForeignKey(Neighborhood, on_delete=models.CASCADE, null=True)
-    date = models.DateTimeField(auto_now_add=True)
-    
-    def __str__(self):
-        return self.name
-
-    def save_post(self):
+    def create_business(self):
         self.save()
 
-    @classmethod
-    def all_posts(cls,id):
-        posts = Post.objects.all()
-        return posts
+    def delete_business(self):
+        self.delete()
 
     @classmethod
-    def search_by_name(cls, search_term):
-        post = cls.objects.filter(name__icontains=search_term)
-        return post
+    def search_business(cls, name):
+        return cls.objects.filter(name__icontains=name).all()
 
-class Join(models.Model):
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
-    hood = models.ForeignKey(Neighborhood, on_delete=models.CASCADE, null=True)
+class Post(models.Model):
+    title = models.CharField(max_length=120, null=True)
+    post = models.TextField()
+    date = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='post_owner')
+    hood = models.ForeignKey(NeighbourHood, on_delete=models.CASCADE, related_name='hood_post')
 
-    def __str__(self):
-        return self.user_id
