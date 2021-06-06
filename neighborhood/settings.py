@@ -31,7 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'tinymce',
+    'crispy_forms',
+    'cloudinary',
     'hood',
     'django.contrib.admin',
     'django.contrib.auth',
