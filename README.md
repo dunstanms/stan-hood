@@ -18,9 +18,13 @@ This is a neigbhourhood watch app, a nyumba kumi and government policing in know
 * Find Contact Information for the health department and Police authorities near my neighborhood.
 * Create Posts that will be visible to everyone in my neighborhood.
 * Change My neighborhood when I decide to move out.
+
 * Only view details of a single neighborhood.
 
-  
+## ERD Diagram
+<img src="https://raw.githubusercontent.com/ubuntustan/stan-hood/master/static/images/hooderd.png"> 
+
+
 ## Setup and Installation  
 To get the project .......  
   
