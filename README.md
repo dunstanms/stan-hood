@@ -7,7 +7,7 @@
 This is a neigbhourhood watch app, a nyumba kumi and government policing in knowing your your neighbour. In order to join a hood you must sign up then login to be a member of a hood. 
 
 ##  Live Link  
- Click [View Site](https://)  to visit the site
+ Click [View Site](https://mtaa-watch.herokuapp.com/)  to visit the site
 
 
 ## User Story  
@@ -20,6 +20,11 @@ This is a neigbhourhood watch app, a nyumba kumi and government policing in know
 * Change My neighborhood when I decide to move out.
 
 * Only view details of a single neighborhood.
+## Home-page
+<img src="https://raw.githubusercontent.com/ubuntustan/stan-hood/master/static/images/home-hood.png">
+
+## Profile 
+<img src="https://raw.githubusercontent.com/ubuntustan/stan-hood/master/static/images/profile.png">
 
 ## ERD Diagram
 <img src="https://raw.githubusercontent.com/ubuntustan/stan-hood/master/static/images/hooderd.png"> 
