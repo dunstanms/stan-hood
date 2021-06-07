@@ -29,6 +29,8 @@ This is a neigbhourhood watch app, a nyumba kumi and government policing in know
 ## ERD Diagram
 <img src="https://raw.githubusercontent.com/ubuntustan/stan-hood/master/static/images/hooderd.png"> 
 
+## Figma design
+https://www.figma.com/file/R2WuTCbqFHDBEqpxBHBB2y/Untitled?node-id=0%3A1
 
 ## Setup and Installation  
 To get the project .......  
